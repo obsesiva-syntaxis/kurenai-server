@@ -1,43 +1,77 @@
-const { ApolloServer } = require('apollo-server');
-const connect = require('./database/dbConfig');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const express = require('express');
+const cors = require('cors');
+const { ApolloServer } = require('apollo-server-express');
+const { graphqlUploadExpress } = require('graphql-upload');
 const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
-const figlet = require('figlet');
-const jwt = require('jsonwebtoken');
+
 require('dotenv').config({ path: '.env' });
 
-connect();
+const config = {
+    application: {
+        cors: {
+            server: [
+                {
+                    origin: process.env.PORT || 4000,
+                    credentials: true
+                }
+            ]
+        }
+    }
+}
 
 //prepare apollo server
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }) => {
-
-        const token = req.headers['auth'] || '';
-        if (token) {
-            try {
-                const user = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_KEY);
-                return { user };
-            } catch (err) {
-                console.log(err);
-            }
-        }
+mongoose.connect(process.env.MONGOURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}, (err, _) => {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('DATABAS3 CONNECTED !!!!');
+        server();
     }
 });
 
-//init apollo server
-server.listen().then(async ({ url }) => {
-    await figlet('SERVER ON', function (err, data) {
-        if (err) {
-            console.log('Something went wrong...');
-            console.dir(err);
-            return;
+async function server(){
+    const serverApollo = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: ({ req }) => {
+            const token = req.headers.authorization;
+            if(token){
+                try {
+                    const user = jwt.verify(
+                        token.replace('Bearer ', ''),
+                        process.env.JWT_KEY
+                    );
+                    return {
+                        user,
+                    }
+                } catch (err) {
+                    console.log('########### ERROR ###########');
+                    console.log(err);
+                    throw new Error('Invalid Token');
+                }
+            }
         }
-        console.log(data)
     });
 
-    console.log('---------------------------------')
-    console.log(`>>>>>>>>>>>>>>> ${url}`);
-});
+    await serverApollo.start();
+    const app = express();
+
+    app.use(cors(
+        config.application.cors.server
+    ));
+
+    app.use(graphqlUploadExpress());
+    serverApollo.applyMiddleware({ app });
+    await new Promise((r) => app.listen({
+        port: process.env.PORT || 4000
+    }, r));
+
+    console.log(`Server ready at http://localhost:${process.env.PORT}${serverApollo.graphqlPath}`);
+}
 

@@ -17,6 +17,7 @@
     "figlet": "^1.5.0",
     "graphql": "^15.5.0",
     "graphql-scalars": "^1.10.0",
+    "graphql-upload": "^13.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mongoose": "^5.12.13"
