@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
+require('moment/locale/es-mx');
+moment.locale('Es-mx');
 
 const PostSchema = mongoose.Schema({ 
     name: {
@@ -11,7 +14,7 @@ const PostSchema = mongoose.Schema({
     },
     postDate: {
         type: Date,
-        default: new Date(),
+        default: moment().format(),
     },
     avatarUrl: {
         type: String,

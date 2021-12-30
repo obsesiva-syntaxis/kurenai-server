@@ -30,8 +30,7 @@ const typeDefs = gql`
         end: DateTime,
         bgColor: String,
         desc: String,
-        user: ID,
-        userName: String,
+        user: User,
         hours: Int,
     }
 
@@ -100,6 +99,7 @@ const typeDefs = gql`
         #EVENT
         getEvents: [Event],
         getEventById(id: ID!): Event,
+        lastEventsAdded: [Event],
     },
     #Mutation
     type Mutation {

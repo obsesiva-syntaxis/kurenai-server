@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
+require('moment/locale/es-mx');
+moment.locale('Es-mx');
 
 const EventSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        require: true,
     },
     insta: {
         type: String,
-        required: true,
+        require: true,
         trim: true,
     },
     rut: {
@@ -21,12 +24,12 @@ const EventSchema = mongoose.Schema({
     },
     initPayment: {
         type: Number,
-        required: true,
+        require: true,
         trim: true,
     },
     totalPayment: {
         type: Number,
-        required: true,
+        require: true,
         trim: true,
     },
     imgUrl: {
@@ -44,7 +47,7 @@ const EventSchema = mongoose.Schema({
     birdDate: {
         type: Date,
         //TEST
-        default: new Date(),
+        default: moment().format(),
     },
     phoneNumber: {
         type: String,
@@ -53,19 +56,19 @@ const EventSchema = mongoose.Schema({
     },
     start: {
         type: Date,
-        required: true,
+        require: true,
         //TEST
-        default: new Date(),
+        default: moment().format(),
     },
     end: {
         type: Date,
-        required: true,
+        require: true,
         //TEST
-        default: new Date(),
+        default: moment().format(),
     },
     bgColor: {
         type: String,
-        required: true,
+        require: true,
         trim: true,
     },
     desc: {
@@ -74,15 +77,15 @@ const EventSchema = mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        require: true,
         ref: 'Usuario',
-    },
-    userName: {
-        type: String,
-        required: true,
     },
     hours: {
         type: Number,
+    },
+    createAt: {
+        type: Date,
+        default: moment().format(),
     }
 });
 
