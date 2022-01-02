@@ -10,6 +10,7 @@ async function getPosts() {
 }
 
 async function createPost( input, ctx ) {
+    
     if(!ctx.user){
         throw new Error('Un usuario registrado debe crear el post');
     }

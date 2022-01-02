@@ -1,7 +1,7 @@
 //Utils
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const awsUploadImage = require('../utils/aws-upload-image');
 const User = require('../models/User');
 
 const newToken = (user, key, expiresIn) => {
@@ -83,6 +83,13 @@ async function modifyUser(input) {
     } catch (err) {
         console.log(err);
     }
+}
+
+async function updateAvatar( file, ctx ) {
+    const { id } = ctx.user;
+    console.log(id);
+
+    return null;
 }
 
 module.exports = {

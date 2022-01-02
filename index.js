@@ -40,7 +40,7 @@ async function server(){
         typeDefs,
         resolvers,
         context: ({ req }) => {
-            const token = req.headers.authorization;
+            const token = req.headers.auth;
             if(token){
                 try {
                     const user = jwt.verify(
@@ -49,6 +49,7 @@ async function server(){
                     );
                     return {
                         user,
+                        
                     }
                 } catch (err) {
                     console.log('########### ERROR ###########');
@@ -72,6 +73,6 @@ async function server(){
         port: process.env.PORT || 4000
     }, r));
 
-    console.log(`Server ready at http://localhost:${process.env.PORT}${serverApollo.graphqlPath}`);
+    console.log(`Server ready at http://localhost:${process.env.PORT || 4000}${serverApollo.graphqlPath}`);
 }
 

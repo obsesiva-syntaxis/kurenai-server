@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
+    scalar Upload
     scalar DateTime
 
     #Types
@@ -44,6 +45,11 @@ const typeDefs = gql`
 
     type Token {
         token: String,
+    }
+
+    type UpdateAvatar {
+        status: Boolean,
+        urlAvatar: String,
     }
 
     #inputs
@@ -110,6 +116,7 @@ const typeDefs = gql`
         createUser(input: UserInput): User,
         authUser(input: AuthInput): Token,
         modifyUser(id: ID!, input: UserInput): User,
+        updateAvatar( file: Upload ): UpdateAvatar,
 
         #EVENT
         createEvent(input: EventInput): Event,
