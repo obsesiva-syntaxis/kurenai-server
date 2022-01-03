@@ -62,9 +62,17 @@ const typeDefs = gql`
     }
 
     input UserInput {
-        name: String!,
-        email: String!,
+        name: String,
+        email: String,
         password: String,
+        avatarUrl: String,
+    }
+
+    input UserModifyInput {
+        name: String,
+        email: String,
+        currentPassword: String,
+        newPassword: String,
         avatarUrl: String,
     }
 
@@ -106,6 +114,7 @@ const typeDefs = gql`
         getEvents: [Event],
         getEventById(id: ID!): Event,
         lastEventsAdded: [Event],
+        search( search: String ): [Event],
     },
     #Mutation
     type Mutation {
@@ -115,7 +124,7 @@ const typeDefs = gql`
         #USER
         createUser(input: UserInput): User,
         authUser(input: AuthInput): Token,
-        modifyUser(id: ID!, input: UserInput): User,
+        modifyUser(input: UserModifyInput): Boolean,
         updateAvatar( file: Upload ): UpdateAvatar,
 
         #EVENT

@@ -68,6 +68,13 @@ async function lastEventsAdded() {
     }
 }
 
+async function search( search ){
+    const events = await Event.find({
+        title: { $regex: search, $options: 'i' }
+    }).populate('user');
+    return events;
+}
+
 module.exports = {
     getEvents,
     getEventById,
@@ -75,6 +82,7 @@ module.exports = {
     updateEvent,
     deleteEvent,
     lastEventsAdded,
+    search,
 }
 
 

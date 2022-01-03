@@ -18,6 +18,7 @@ const resolvers = {
         getEvents: () => eventController.getEvents(),
         getEventById: (_, { id }) => eventController.getEventById( id ),
         lastEventsAdded: (_, {}) => eventController.lastEventsAdded(),
+        search: (_, { search }) => eventController.search( search ),
         //Post
         getPosts: () => postController.getPosts(),
     },
@@ -25,7 +26,7 @@ const resolvers = {
         //USER
         createUser: (_, { input }) => userController.createUser( input ),
         authUser: (_, { input }) => userController.authUser( input ),
-        modifyUser: (_, { input }) => userController.modifyUser( input ),
+        modifyUser: (_, { input }, ctx) => userController.modifyUser( input, ctx ),
         updateAvatar: (_, { file }, ctx) => userController.updateAvatar( file, ctx ),
         //Event
         createEvent: (_, { input }, ctx) => eventController.createEvent( input, ctx ),

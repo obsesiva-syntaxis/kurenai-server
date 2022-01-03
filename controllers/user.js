@@ -67,29 +67,50 @@ async function authUser(input) {
     }
 }
 
-async function modifyUser(input) {
-    //Validator III: compare id of user auth
-    if (id !== ctx.user.id.toString()) {
-        throw new Error('Los datos ingresados no coinciden con el usuario autenticado');
-    }
-
-    //modify the items
-    // const salt = await bcryptjs.genSaltSync(10);
-    // input.password = await bcryptjs.hash(password, salt);
+async function modifyUser(input, ctx) {
+    const { id } = ctx.user;
     try {
-        const result = await User.findOneAndUpdate({ _id: id }, input, { new: true });
-        //then show result
-        return result;
+        if (input.currentPassword && input.newPassword) {
+            const userFound = await User.findById(id);
+            const passwordSuccess = await bcryptjs.compare(
+                input.currentPassword,
+                userFound.password
+            )
+            if (!passwordSuccess) throw new Error('Contraseña incorrecta');
+            const salt = await bcryptjs.genSaltSync(10);
+            const newPasswordCrypt = await bcryptjs.hash(input.newPassword, salt);
+            await User.findByIdAndUpdate(id, { password: newPasswordCrypt });
+        } else {
+            await User.findByIdAndUpdate(id, input);
+        }
+        return true;
     } catch (err) {
         console.log(err);
+        return false;
     }
 }
 
 async function updateAvatar( file, ctx ) {
     const { id } = ctx.user;
-    console.log(id);
+    const { createReadStream, mimetype } = await file;
+    const ext = mimetype.split('/')[1];
+    const imageName = `avatar/${ id }.${ext}`;
+    const fileData = createReadStream();
 
-    return null;
+    try {
+        const result = await awsUploadImage(fileData, imageName);
+        console.log(result);
+        await User.findByIdAndUpdate(id, { avatarUrl: result });
+        return {
+            status: true,
+            urlAvatar: result,
+        }
+    } catch (err) {
+        return {
+            status: true,
+            urlAvatar: null,
+        }
+    }
 }
 
 module.exports = {
@@ -99,4 +120,5 @@ module.exports = {
     createUser,
     authUser,
     modifyUser,
+    updateAvatar,
 }
