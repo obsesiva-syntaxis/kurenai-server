@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
+const moment = require('moment-timezone');
 require('moment/locale/es-mx');
 moment.locale('Es-mx');
+
+const dateSantiago = moment.tz(moment().format(), 'America/Santiago');
 
 const PostSchema = mongoose.Schema({ 
     name: {
@@ -14,7 +16,7 @@ const PostSchema = mongoose.Schema({
     },
     postDate: {
         type: Date,
-        default: moment().format(),
+        default: dateSantiago.format(),
     },
     avatarUrl: {
         type: String,

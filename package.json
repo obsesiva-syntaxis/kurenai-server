@@ -22,6 +22,7 @@
     "graphql-upload": "^13.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "mongoose": "^5.12.13"
   },
   "devDependencies": {
