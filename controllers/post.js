@@ -2,7 +2,7 @@ const Post = require('../models/Post');
 
 async function getPosts() {
     try {
-        const results = await Post.find({}).sort({ postDate: -1 }).limit(10);
+        const results = await Post.find().populate('user').sort({ postDate: -1 }).limit(10);
         return results; 
     } catch (err) {
         console.log(err);

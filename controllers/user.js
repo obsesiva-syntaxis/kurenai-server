@@ -5,8 +5,8 @@ const awsUploadImage = require('../utils/aws-upload-image');
 const User = require('../models/User');
 
 const newToken = (user, key, expiresIn) => {
-    const { id, email, name, avatarUrl } = user;
-    return jwt.sign({ id, email, name, avatarUrl }, key, { expiresIn });
+    const { id, email, name, avatarUrl, type } = user;
+    return jwt.sign({ id, email, name, avatarUrl, type }, key, { expiresIn });
 }
 
 async function getUsers() {

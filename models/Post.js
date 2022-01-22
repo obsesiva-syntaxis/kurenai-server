@@ -6,10 +6,6 @@ moment.locale('Es-mx');
 const dateSantiago = moment.tz(moment().format(), 'America/Santiago');
 
 const PostSchema = mongoose.Schema({ 
-    name: {
-        type: String,
-        required: true,
-    },
     message: {
         type: String,
         required: true,
@@ -18,11 +14,7 @@ const PostSchema = mongoose.Schema({
         type: Date,
         default: dateSantiago.format(),
     },
-    avatarUrl: {
-        type: String,
-        required: true,
-    },
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Usuario',

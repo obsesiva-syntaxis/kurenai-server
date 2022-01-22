@@ -47,13 +47,14 @@ async function server(){
                         token.replace('Bearer ', ''),
                         process.env.JWT_KEY
                     );
+                    console.log(user);
                     return {
                         user,
-                        
                     }
                 } catch (err) {
                     console.log('########### ERROR ###########');
                     console.log(err);
+                    req.headers.auth = null;
                     throw new Error('Invalid Token');
                 }
             }

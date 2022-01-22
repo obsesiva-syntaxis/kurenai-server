@@ -7,11 +7,9 @@ const typeDefs = gql`
     #Types
     type Post {
         id: ID,
-        name: String,
         message: String,
         postDate: DateTime,
-        avatarUrl: String,
-        userId: ID,
+        user: User,
     }
 
     type Event {
@@ -38,6 +36,7 @@ const typeDefs = gql`
     type User {
         id: ID,
         name: String,
+        type: String,
         email: String,
         avatarUrl: String,
         password: String,
@@ -54,16 +53,15 @@ const typeDefs = gql`
 
     #inputs
     input PostInput {
-        name: String!,
         message: String!,
         postDate: DateTime,
-        avatarUrl: String!,
-        userId: ID!,
+        user: ID!,
     }
 
     input UserInput {
         name: String,
         email: String,
+        type:String,
         password: String,
         avatarUrl: String,
     }
