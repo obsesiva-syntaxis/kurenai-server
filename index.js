@@ -47,7 +47,7 @@ async function server(){
                         token.replace('Bearer ', ''),
                         process.env.JWT_KEY
                     );
-                    console.log(user);
+                    // console.log(user);
                     return {
                         user,
                     }

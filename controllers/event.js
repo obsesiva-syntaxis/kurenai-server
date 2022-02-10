@@ -1,4 +1,9 @@
 const Event = require('../models/Event');
+const moment = require('moment-timezone');
+require('moment/locale/es-mx');
+moment.locale('Es-mx');
+
+const dateSantiago = moment.tz(moment().format(), 'America/Santiago');
 
 async function getEvents() {
     try {
@@ -9,16 +14,16 @@ async function getEvents() {
     }
 }
 
-async function getEventById( id ) {
+async function getEventById(id) {
     try {
-        const result = await Event.findById( id ).populate('user');
+        const result = await Event.findById(id).populate('user');
         return result;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function createEvent( input, ctx ) {
+async function createEvent(input, ctx) {
     //Validator IV: user who create event must be exist 
     if (!ctx.user) {
         throw new Error('Un usuario registrado debe crear el evento');
@@ -33,7 +38,7 @@ async function createEvent( input, ctx ) {
     }
 }
 
-async function updateEvent( id, input, ctx ) {
+async function updateEvent(id, input, ctx) {
     if (!ctx.user) {
         throw new Error('Un usuario registrado debe crear el evento');
     }
@@ -46,7 +51,7 @@ async function updateEvent( id, input, ctx ) {
     }
 }
 
-async function deleteEvent( id, ctx ) {
+async function deleteEvent(id, ctx) {
     if (!ctx.user) {
         throw new Error('Un usuario registrado debe eliminar el evento');
     }
@@ -68,12 +73,53 @@ async function lastEventsAdded() {
     }
 }
 
-async function search( search ){
+async function search(search) {
     const events = await Event.find({
         title: { $regex: search, $options: 'i' }
     }).populate('user');
     return events;
 }
+
+async function todayEvent() {
+    try {
+        const today = dateSantiago.format('DD');
+        const month = dateSantiago.format('MM');
+        const year = dateSantiago.format('YYYY');
+        const events = await Event.find({}).populate('user');
+        // console.log(events);
+        for (const event of events) {
+            const eventToday = moment(event.start).format('DD');
+            const eventMonth = moment(event.start).format('MM');
+            const eventYear = moment(event.start).format('YYYY');
+
+            if(eventToday === today && eventMonth === month && eventYear === year) return event;
+        }
+        return null;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+async function tomorrowEvent() {
+    try {
+        const today = dateSantiago.format('DD');
+        let tomorrow = moment(dateSantiago).date(parseInt(today)+1).format('DD-MM-YYYY');
+        const events = await Event.find({}).populate('user');
+        const endOfMonth = moment().endOf("month").format('DD');
+        if(today === endOfMonth){
+            tomorrow = dateSantiago.month(parseInt(month)+1).date(1).format('DD-MM-YYYY');
+        }
+        for (const event of events) {
+            const eventDate = moment(event.start).format('DD-MM-YYYY');
+            console.log(eventDate);
+            if(eventDate === tomorrow) return event;
+        }
+        return null;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 
 module.exports = {
     getEvents,
@@ -83,6 +129,8 @@ module.exports = {
     deleteEvent,
     lastEventsAdded,
     search,
+    todayEvent,
+    tomorrowEvent
 }
 
 

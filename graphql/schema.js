@@ -80,8 +80,8 @@ const typeDefs = gql`
     }
 
     input EventInput {
-        title: String!,
-        insta: String!,
+        title: String,
+        insta: String,
         rut: String,
         name: String,
         initPayment: Int,
@@ -113,6 +113,8 @@ const typeDefs = gql`
         getEventById(id: ID!): Event,
         lastEventsAdded: [Event],
         search( search: String ): [Event],
+        todayEvent: Event,
+        tomorrowEvent: Event,
     },
     #Mutation
     type Mutation {

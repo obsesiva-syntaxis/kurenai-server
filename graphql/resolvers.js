@@ -19,6 +19,8 @@ const resolvers = {
         getEventById: (_, { id }) => eventController.getEventById( id ),
         lastEventsAdded: (_, {}) => eventController.lastEventsAdded(),
         search: (_, { search }) => eventController.search( search ),
+        todayEvent: () => eventController.todayEvent(),
+        tomorrowEvent: () => eventController.tomorrowEvent(),
         //Post
         getPosts: () => postController.getPosts(),
     },
