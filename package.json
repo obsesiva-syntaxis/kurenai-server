@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js",
-    "clear_jest": "jest --clearCache"
+    "dev": "nodemon ./index.js"
   },
   "author": "obsesiva_syntaxis",
   "license": "ISC",
