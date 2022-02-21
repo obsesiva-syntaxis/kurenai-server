@@ -39,7 +39,7 @@ async function createUser(input) {
     const { email, password } = input;
     //Validator I: Si ya Existe
     const userFounded = await User.findOne({ email });
-    if (userFounded) { throw new Error('El usuario ya esta registrado'); }
+    if (userFounded) { throw new Error('Datos incorrectos!'); }
     //hashing the pwd
     const salt = await bcryptjs.genSaltSync(10);
     input.password = await bcryptjs.hash(password, salt);
@@ -57,10 +57,10 @@ async function authUser(input) {
     const { email, password } = input;
     //Validator I: Si no Existe
     const userFounded = await User.findOne({ email });
-    if (!userFounded) { throw new Error('El usuario no se encuentra en nuestros datos'); }
+    if (!userFounded) { throw new Error('Datos incorrectos!'); }
     //Validator II: compare password
     const validPass = await bcryptjs.compare(password, userFounded.password);
-    if (!validPass) { throw new Error('Password incorrecto'); }
+    if (!validPass) { throw new Error('Datos incorrectos!'); }
     //Authenticar with new token
     return {
         token: newToken(userFounded, process.env.JWT_KEY, '3h')
@@ -76,7 +76,7 @@ async function modifyUser(input, ctx) {
                 input.currentPassword,
                 userFound.password
             )
-            if (!passwordSuccess) throw new Error('Contraseña incorrecta');
+            if (!passwordSuccess) throw new Error('Datos incorrectos!');
             const salt = await bcryptjs.genSaltSync(10);
             const newPasswordCrypt = await bcryptjs.hash(input.newPassword, salt);
             await User.findByIdAndUpdate(id, { password: newPasswordCrypt });
@@ -113,6 +113,15 @@ async function updateAvatar( file, ctx ) {
     }
 }
 
+async function deleteUser( id, ctx ){
+    try{
+        await User.findByIdAndRemove( id );
+        return 'Usuario eliminado';
+    } catch( err ){
+        console.log(err);
+    }
+}
+
 module.exports = {
     getUsers,
     getUser,
@@ -121,4 +130,5 @@ module.exports = {
     authUser,
     modifyUser,
     updateAvatar,
+    deleteUser,
 }

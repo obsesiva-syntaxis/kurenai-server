@@ -30,12 +30,14 @@ const resolvers = {
         authUser: (_, { input }) => userController.authUser( input ),
         modifyUser: (_, { input }, ctx) => userController.modifyUser( input, ctx ),
         updateAvatar: (_, { file }, ctx) => userController.updateAvatar( file, ctx ),
+        deleteUser: (_, { id }, ctx) => userController.deleteUser( id, ctx ),
         //Event
         createEvent: (_, { input }, ctx) => eventController.createEvent( input, ctx ),
         updateEvent: (_, { id, input }, ctx) => eventController.updateEvent( id, input, ctx ),
         deleteEvent: (_, { id }, ctx ) => eventController.deleteEvent( id, ctx ),
         //Post
         createPost: (_, { input }, ctx) => postController.createPost( input, ctx ),
+        deletePost: (_, { id }, ctx) => postController.deletePost(id, ctx),
     },
 }
 

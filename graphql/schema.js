@@ -61,7 +61,7 @@ const typeDefs = gql`
     input UserInput {
         name: String,
         email: String,
-        type:String,
+        type: String,
         password: String,
         avatarUrl: String,
     }
@@ -69,6 +69,7 @@ const typeDefs = gql`
     input UserModifyInput {
         name: String,
         email: String,
+        type: String,
         currentPassword: String,
         newPassword: String,
         avatarUrl: String,
@@ -120,17 +121,19 @@ const typeDefs = gql`
     type Mutation {
         #POST
         createPost(input: PostInput): Post,
+        deletePost(id: ID!): String,
 
         #USER
         createUser(input: UserInput): User,
         authUser(input: AuthInput): Token,
         modifyUser(input: UserModifyInput): Boolean,
+        deleteUser(id: ID!): String,
         updateAvatar( file: Upload ): UpdateAvatar,
 
         #EVENT
         createEvent(input: EventInput): Event,
         updateEvent(id: ID!, input: EventInput): Event,
-        deleteEvent(id: ID!): Event,
+        deleteEvent(id: ID!): String,
     },
 `;
 

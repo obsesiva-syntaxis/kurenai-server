@@ -24,7 +24,20 @@ async function createPost( input, ctx ) {
     }
 }
 
+async function deletePost( id, ctx ) {
+    try {
+        if(!ctx.user){
+            throw new Error('Un usuario registrado debe crear el post');
+        }
+        await Post.findByIdAndRemove( id );
+        return 'Post Eliminado';
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 module.exports = {
     getPosts,
     createPost,
+    deletePost,
 }

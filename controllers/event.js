@@ -57,7 +57,7 @@ async function deleteEvent(id, ctx) {
     }
     try {
         await Event.findByIdAndRemove(id);
-        return "Evento Eliminado!"
+        return "Evento Eliminado!";
     } catch (err) {
         console.log(err);
     }
