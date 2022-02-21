@@ -22,6 +22,7 @@ const config = {
     }
 }
 
+
 //prepare apollo server
 mongoose.connect(process.env.MONGOURI, {
     useNewUrlParser: true,
