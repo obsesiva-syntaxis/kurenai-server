@@ -44,7 +44,6 @@ async function updateEvent(id, input, ctx) {
     }
     try {
         const result = await Event.findByIdAndUpdate(id, input, { new: true });
-        console.log(result);
         return result;
     } catch (err) {
         console.log(err);
@@ -111,7 +110,6 @@ async function tomorrowEvent() {
         }
         for (const event of events) {
             const eventDate = moment(event.start).format('DD-MM-YYYY');
-            console.log(eventDate);
             if(eventDate === tomorrow) return event;
         }
         return null;

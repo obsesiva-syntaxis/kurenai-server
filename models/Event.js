@@ -22,7 +22,12 @@ const EventSchema = mongoose.Schema({
         type: String,
         //required: true,
     },
-    initPayment: {
+    reservePayment: {
+        type: Number,
+        require: true,
+        trim: true,
+    },
+    hourPayment: {
         type: Number,
         require: true,
         trim: true,
