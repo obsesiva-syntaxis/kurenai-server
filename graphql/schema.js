@@ -116,8 +116,8 @@ const typeDefs = gql`
         getEventById(id: ID!): Event,
         lastEventsAdded: [Event],
         search( search: String ): [Event],
-        todayEvent: Event,
-        tomorrowEvent: Event,
+        todayEvent: [Event],
+        tomorrowEvent: [Event],
     },
     #Mutation
     type Mutation {

@@ -85,15 +85,18 @@ async function todayEvent() {
         const month = dateSantiago.format('MM');
         const year = dateSantiago.format('YYYY');
         const events = await Event.find({}).populate('user');
+        const results = [];
         // console.log(events);
         for (const event of events) {
             const eventToday = moment(event.start).format('DD');
             const eventMonth = moment(event.start).format('MM');
             const eventYear = moment(event.start).format('YYYY');
 
-            if(eventToday === today && eventMonth === month && eventYear === year) return event;
+            if(eventToday === today && eventMonth === month && eventYear === year){
+                results.push(event);
+            }
         }
-        return null;
+        return results;
     } catch (err) {
         throw new Error(err);
     }
@@ -105,14 +108,17 @@ async function tomorrowEvent() {
         let tomorrow = moment(dateSantiago).date(parseInt(today)+1).format('DD-MM-YYYY');
         const events = await Event.find({}).populate('user');
         const endOfMonth = moment().endOf("month").format('DD');
+        const results = [];
         if(today === endOfMonth){
             tomorrow = dateSantiago.month(parseInt(month)+1).date(1).format('DD-MM-YYYY');
         }
         for (const event of events) {
             const eventDate = moment(event.start).format('DD-MM-YYYY');
-            if(eventDate === tomorrow) return event;
+            if(eventDate === tomorrow){
+                results.push(event);
+            };
         }
-        return null;
+        return results;
     } catch (err) {
         throw new Error(err);
     }
