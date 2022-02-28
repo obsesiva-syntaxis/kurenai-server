@@ -105,12 +105,13 @@ async function todayEvent() {
 async function tomorrowEvent() {
     try {
         const today = dateSantiago.format('DD');
+        const month = dateSantiago.format('MM');
         let tomorrow = moment(dateSantiago).date(parseInt(today)+1).format('DD-MM-YYYY');
         const events = await Event.find({}).populate('user');
-        const endOfMonth = moment().endOf("month").format('DD');
+        const endOfMonth = moment().endOf('month').format('DD');
         const results = [];
         if(today === endOfMonth){
-            tomorrow = dateSantiago.month(parseInt(month)+1).date(1).format('DD-MM-YYYY');
+            tomorrow = dateSantiago.month(parseInt(month)).date(1).format('DD-MM-YYYY');
         }
         for (const event of events) {
             const eventDate = moment(event.start).format('DD-MM-YYYY');
