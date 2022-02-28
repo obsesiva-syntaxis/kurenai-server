@@ -81,21 +81,17 @@ async function search(search) {
 
 async function todayEvent() {
     try {
-        const today = dateSantiago.format('DD');
-        const month = dateSantiago.format('MM');
-        const year = dateSantiago.format('YYYY');
         const events = await Event.find({}).populate('user');
         const results = [];
-        // console.log(events);
         for (const event of events) {
-            const eventToday = moment(event.start).format('DD');
-            const eventMonth = moment(event.start).format('MM');
-            const eventYear = moment(event.start).format('YYYY');
-
-            if(eventToday === today && eventMonth === month && eventYear === year){
+            if(moment(event.start).format('DD/MM/YYYY') === moment().format('DD/MM/YYYY')){
                 results.push(event);
+                console.log('fecha evento : ',moment(event.start).format('DD/MM/YYYY'));
+                console.log('fecha actual : ',moment(dateSantiago).format('DD/MM/YYYY'));
+                console.log('fecha actual moment : ',moment().format('DD/MM/YYYY'));
             }
         }
+        
         return results;
     } catch (err) {
         throw new Error(err);
@@ -104,9 +100,12 @@ async function todayEvent() {
 
 async function tomorrowEvent() {
     try {
-        const today = dateSantiago.format('DD');
-        const month = dateSantiago.format('MM');
-        let tomorrow = moment(dateSantiago).date(parseInt(today)+1).format('DD-MM-YYYY');
+        const today = moment().format('DD');
+        const month = moment().format('MM');
+        let tomorrow = moment().date(parseInt(today)+1).format('DD-MM-YYYY');
+        // const today = dateSantiago.format('DD');
+        // const month = dateSantiago.format('MM');
+        // let tomorrow = moment(dateSantiago).date(parseInt(today)+1).format('DD-MM-YYYY');
         const events = await Event.find({}).populate('user');
         const endOfMonth = moment().endOf('month').format('DD');
         const results = [];
